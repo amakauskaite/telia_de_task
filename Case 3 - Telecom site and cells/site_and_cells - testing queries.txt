@@ -1,0 +1,17 @@
+/*
+The following tutorials and documentation were used to create the queries for the solution of the task:
+https://towardsdatascience.com/analyze-csvs-with-sql-in-command-line-233202dc1241
+https://csvkit.readthedocs.io/en/latest/scripts/csvsql.html
+
+For running the following commands, that were used for testing, firstly install cvskit. Then run the following commands using the command line. 
+NB: There shouldn't be any line breaks in the query.
+*/
+
+/* Have all the tables in one data set */
+csvsql --query "SELECT A.[site], A.[year], A.[month], A.[day], A.[cell_identity], A.[frequency_band], B.[site_id] FROM  ( SELECT 'gsm' as [site], [year], [month], [day], [cell_identity], [frequency_band], [site_id] FROM gsm UNION ALL SELECT 'lte' as [site], [year], [month], [day], [cell_identity], [frequency_band], [site_id] FROM lte UNION ALL SELECT 'umts' as [site], [year], [month], [day], [cell_identity], [frequency_band], [site_id] FROM umts ) A LEFT JOIN site B ON A.site_id = B.site_id" Archive/gsm.csv Archive/lte.csv Archive/umts.csv Archive/site.csv | csvlook
+
+/* How many cells per technology are there on each site */
+csvsql --query "SELECT B.[site_id], COUNT(CASE [site] WHEN 'lte' THEN [cell_identity] END) AS site_lte_cnt, COUNT(CASE [site] WHEN 'umts' THEN [cell_identity] END) AS site_umts_cnt, COUNT(CASE [site] WHEN 'gsm' THEN [cell_identity] END) AS site_gsm_cnt FROM  ( SELECT 'gsm' as [site], [year], [month], [day], [cell_identity], [frequency_band], [site_id] FROM gsm UNION ALL SELECT 'lte' as [site], [year], [month], [day], [cell_identity], [frequency_band], [site_id] FROM lte UNION ALL SELECT 'umts' as [site], [year], [month], [day], [cell_identity], [frequency_band], [site_id] FROM umts ) A LEFT JOIN site B ON A.site_id = B.site_id GROUP BY B.[site_id]" Archive/gsm.csv Archive/lte.csv Archive/umts.csv Archive/site.csv | csvlook
+
+/* Calculate number of cells per frequency band on a particular site */
+csvsql --query "SELECT B.[site_id], 'frequency_band_' || CAST([frequency_band] AS INTEGER) || '_by_site' AS frequency_band_by_site, COUNT(*) FROM  ( SELECT 'gsm' as [site], [year], [month], [day], [cell_identity], [frequency_band], [site_id] FROM gsm UNION ALL SELECT 'lte' as [site], [year], [month], [day], [cell_identity], [frequency_band], [site_id] FROM lte UNION ALL SELECT 'umts' as [site], [year], [month], [day], [cell_identity], [frequency_band], [site_id] FROM umts ) A LEFT JOIN site B ON A.site_id = B.site_id GROUP BY B.[site_id], 'frequency_band_' || CAST([frequency_band] AS INTEGER) || '_by_site'" Archive/gsm.csv Archive/lte.csv Archive/umts.csv Archive/site.csv | csvlook
