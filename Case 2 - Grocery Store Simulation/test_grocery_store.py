@@ -1,3 +1,7 @@
+"""
+Test cases for computeChechoutTime in grocery_store
+"""
+
 import grocery_store as gc
 
 
