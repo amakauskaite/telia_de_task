@@ -1,13 +1,22 @@
-def computeCheckoutTime(customers, n):
+"""
+The function computeCheckoutTime takes a list of times/customers and the number of checkout counters and return the total time required to check out all the customers.
+
+Sample input:[2,3,10], 2
+Sample output: 12
+"""
+
+from typing import List
+
+def computeCheckoutTime(customers: List[int], n: int) -> int:
     if n == 1:
         return sum(customers)
     elif n >= len(customers):
         return max(customers)
     else:
-        return counter_simulation(n, customers)
+        return counter_simulation(customers, n)
 
 
-def counter_simulation(n, customers):
+def counter_simulation(customers: List[int], n: int) -> int:
     counters = [0] * n
     max_customer_index = len(customers) - 1
     total_time_spent = 0
