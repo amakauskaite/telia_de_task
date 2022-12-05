@@ -1,3 +1,7 @@
+"""
+Test cases for pathReduc function in path_reduction
+"""
+
 import path_reduction as pr
 
 

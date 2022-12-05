@@ -1,4 +1,12 @@
-def pathReduc(ls):
+"""
+The function pathReduc() takes a list of directions (ls) as an input and reducts it to contain a path without redundant paths (for example NORTH -> SOUTH)
+
+Sample input: ["NORTH", "SOUTH", "EAST", "WEST"]
+Sample output: []
+"""
+from typing import List
+
+def pathReduc(ls: List[str]) -> List[str]:
     needless_paths = [
         ["NORTH", "SOUTH"],
         ["SOUTH", "NORTH"],
