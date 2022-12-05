@@ -17,7 +17,6 @@ def counter_simulation(n, customers):
         counters[index] = customers[index]
         index += 1
 
-
     while index < len(customers):
         minimum_time = min(counters)
         total_time_spent += minimum_time
@@ -26,14 +25,12 @@ def counter_simulation(n, customers):
         for i, counter in enumerate(counters):
             if counter == 0 and index < max_customer_index:
                 counters[i] = customers[index]
-                index +=1
+                index += 1
             elif counter == 0 and index == max_customer_index:
                 counters[i] = customers[index]
                 if index == max_customer_index:
                     total_time_spent += max(counters)
                     index = max_customer_index + 1
                 break
-
-        
 
     return total_time_spent
